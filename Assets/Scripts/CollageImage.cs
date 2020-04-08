@@ -5,6 +5,9 @@ using UnityEngine;
 public class CollageImage : MonoBehaviour
 {
     public SpriteRenderer PaintingSpriteRenderer;
+    public Texture2D targetTexture; //the targeted texture with the puzzle image
+
+    public CollageOrganizer collageOrg;
 
     void AWake()
     {
@@ -14,6 +17,13 @@ public class CollageImage : MonoBehaviour
     void Start()
     {
         LoadSprite("imgs/1");
+
+        //sent info to collage organizing
+        collageOrg.currentTexture = targetTexture;
+        collageOrg.currentTextureSize = targetTexture.width;
+
+        collageOrg.SetCollagePieces();
+
     }
 
     // Update is called once per frame
@@ -26,8 +36,8 @@ public class CollageImage : MonoBehaviour
     {
         print("Collage image load sprite");
         Texture2D texture = Resources.Load<Texture2D>(fileName);
-        print(texture.width);
-        print(texture.height);
+        //print(texture.width);
+        //print(texture.height);
 
         //cut the image into square size
         int newTextureSize = Mathf.Min(texture.width, texture.height);
@@ -36,13 +46,12 @@ public class CollageImage : MonoBehaviour
         destTex.SetPixels(pix);
         destTex.Apply();
 
-        Texture2D resizedTex = ScaleTexture(destTex, GFractalArt.puzzleImageSize, GFractalArt.puzzleImageSize);
-
-        PaintingSpriteRenderer.sprite = Sprite.Create(resizedTex, new Rect(0, 0, GFractalArt.puzzleImageSize, GFractalArt.puzzleImageSize), new Vector2(0.5f, 0.5f));
+        targetTexture= ScaleTexture(destTex, GFractalArt.puzzleImageSize, GFractalArt.puzzleImageSize);
+        PaintingSpriteRenderer.sprite = Sprite.Create(targetTexture, new Rect(0, 0, GFractalArt.puzzleImageSize, GFractalArt.puzzleImageSize), new Vector2(0.5f, 0.5f));
     }
 
 
-    private Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight)
+    public static Texture2D ScaleTexture(Texture2D source, int targetWidth, int targetHeight)
     {
         Texture2D result = new Texture2D(targetWidth, targetHeight, source.format, true);
         Color[] rpixels = result.GetPixels(0);

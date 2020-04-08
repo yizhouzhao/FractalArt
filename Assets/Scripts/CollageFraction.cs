@@ -37,16 +37,10 @@ public class CollageFraction : MonoBehaviour
         mOffset = gameObject.transform.position - GetMouseWorldPos();
         currentPosition = this.transform.position;
     }
-
-    // Start is called before the first frame update
-    void Start()
+    
+    public void SetImageFromTexture2D(Texture2D tex2d)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        SpriteRenderer spriteRenderer = this.GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = Sprite.Create(tex2d, new Rect(0, 0, GFractalArt.collageSize, GFractalArt.collageSize), new Vector2(0.5f, 0.5f));
     }
 }
