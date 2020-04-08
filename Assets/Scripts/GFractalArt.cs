@@ -9,4 +9,6 @@ public class GFractalArt
 
     public static Vector2 boardCenter = new Vector2(0f, 0f);
     public static int gridCountPerLine = 4;
+
+    public static int puzzleImageSize = 500;
 }

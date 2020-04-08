@@ -36,9 +36,9 @@ public class CollageImage : MonoBehaviour
         destTex.SetPixels(pix);
         destTex.Apply();
 
-        Texture2D resizedTex = ScaleTexture(destTex, 400, 400);
+        Texture2D resizedTex = ScaleTexture(destTex, GFractalArt.puzzleImageSize, GFractalArt.puzzleImageSize);
 
-        PaintingSpriteRenderer.sprite = Sprite.Create(resizedTex, new Rect(0, 0, 400, 400), new Vector2(0.5f, 0.5f));
+        PaintingSpriteRenderer.sprite = Sprite.Create(resizedTex, new Rect(0, 0, GFractalArt.puzzleImageSize, GFractalArt.puzzleImageSize), new Vector2(0.5f, 0.5f));
     }
 
 
