@@ -1,14 +1,34 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CollageFraction : MonoBehaviour
 {
+    //Collage
+    [Header("Collage Information")]
+    public static CollageOrganizer _Collage;
+    public int collageId; //correct collage position id
+    public int positionId; //current postion id
 
     //Move by left button
     private Vector3 mOffset;
     private float mZCoord;
     private Vector3 currentPosition;
+
+    void Awake()
+    {
+        if(_Collage == null)
+        {
+            _Collage = GameObject.Find("Collage").GetComponent<CollageOrganizer>();
+            print(_Collage.gameObject.name);
+        }
+    }
+
+    void Start()
+    {
+        StickToGrid();
+    }
 
     private Vector3 GetMouseWorldPos()
     {
@@ -16,6 +36,31 @@ public class CollageFraction : MonoBehaviour
         mousePoint.z = mZCoord;
 
         return Camera.main.ScreenToWorldPoint(mousePoint);
+    }
+
+    private void OnMouseUp()
+    {
+        StickToGrid();
+        //Stick to grid
+    }
+
+    private void StickToGrid()
+    {
+        bool sticked = false;
+        for (int i = 0; i < _Collage.gridPointList.Count; ++i)
+        {
+            Vector3 grid = _Collage.gridPointList[i];
+            if (Vector3.Distance(this.transform.position, grid) < 0.3f)
+            {
+                this.transform.position = grid;
+                this.positionId = i;
+                sticked = true;
+            }
+        }
+        if (!sticked)
+        {
+            this.positionId = -1;
+        }
     }
 
     private void OnMouseDrag()
