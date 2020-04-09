@@ -16,7 +16,7 @@ public class CollageImage : MonoBehaviour
 
     void Start()
     {
-        LoadSprite("imgs/1");
+        LoadSprite("imgs/4");
 
         //sent info to collage organizing
         collageOrg.currentTexture = targetTexture;
@@ -42,7 +42,7 @@ public class CollageImage : MonoBehaviour
         //cut the image into square size
         int newTextureSize = Mathf.Min(texture.width, texture.height);
         Texture2D destTex = new Texture2D(newTextureSize, newTextureSize);
-        Color[] pix = texture.GetPixels(0, 0, texture.width, texture.width);
+        Color[] pix = texture.GetPixels(0, 0, newTextureSize, newTextureSize);
         destTex.SetPixels(pix);
         destTex.Apply();
 
