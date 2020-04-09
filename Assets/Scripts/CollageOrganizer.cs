@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class CollageOrganizer : MonoBehaviour
     //collage pieces 
     [Header("Collage Pieces")]
     public List<CollageFraction> collageFractionList;
+    public List<CollageFraction> candidateList;
     public List<Vector3> gridPointList;
 
     [Header("Picture")]
@@ -44,6 +46,89 @@ public class CollageOrganizer : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        //Random select collage to move to candidate positions
+        ShuffleCollagePieces();
+        
+    }
+
+    private void ShuffleCollagePieces()
+    {
+        //ReservoirSampling 
+        //see more https://www.geeksforgeeks.org/reservoir-sampling/
+
+        int n = collageFractionList.Count;
+        int k = candidateList.Count;
+
+        int i;
+        List<int> reservoir = new List<int>();
+        List<int> not_in_rervoir = new List<int>();
+        for (i = 0; i < k; i++)
+            reservoir.Add(i);
+
+        for (; i < n; i++)
+        {
+            // Pick a random index from 0 to i. 
+            int j = UnityEngine.Random.Range(0, i + 1);
+
+            // If the randomly picked index  
+            // is smaller than k, then replace  
+            // the element present at the index 
+            // with new element from stream 
+            if (j < k)
+                reservoir[j] = i;
+        }
+
+        //shuffle position
+        for (i = 0; i < k; i++)
+        {
+            collageFractionList[reservoir[i]].transform.position = candidateList[i].transform.position;
+
+            //!!!!!!!!!CAREFUL MAY CAUSE BUG HERE FOR GRID, candidate must not be at grid position
+            collageFractionList[reservoir[i]].positionId = -1;
+
+            //delete placeholder
+            candidateList[i].gameObject.SetActive(false);
+        }
+
+        //interchange position
+        for (i = 0; i < n; i++)
+        {
+            if (!reservoir.Contains(i))
+            {
+                not_in_rervoir.Add(i);
+            }
+        }
+
+        //shuffle collage pieces 
+        for(i = 0; i < n-k; i++)
+        {
+            Vector3 tempPosition = collageFractionList[not_in_rervoir[i]].transform.position;
+            int randomIndex = UnityEngine.Random.Range(i, n-k);
+            collageFractionList[not_in_rervoir[i]].transform.position = collageFractionList[not_in_rervoir[randomIndex]].transform.position;
+            collageFractionList[not_in_rervoir[i]].StickToGrid();
+            collageFractionList[not_in_rervoir[randomIndex]].transform.position = tempPosition;
+            collageFractionList[not_in_rervoir[randomIndex]].StickToGrid();
+        }
+
+    }
+
+    //Get current game score
+    public int GetCollageScore()
+    {
+        int score = 0;
+        foreach(CollageFraction collageFraction in collageFractionList)
+        {
+            if(collageFraction.positionId == collageFraction.collageId)
+            {
+                score++;
+            }
+        }
+        return score;
+    }
+
+    //Set up pictures for collage pieces
     public void SetCollagePieces()
     {
         for(int i = 0; i < collageFractionList.Count; i++)

@@ -44,7 +44,7 @@ public class CollageFraction : MonoBehaviour
         //Stick to grid
     }
 
-    private void StickToGrid()
+    public void StickToGrid()
     {
         bool sticked = false;
         for (int i = 0; i < _Collage.gridPointList.Count; ++i)
