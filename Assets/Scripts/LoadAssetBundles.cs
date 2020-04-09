@@ -9,6 +9,7 @@ public class LoadAssetBundles : MonoBehaviour
     AssetBundle myLoadedAssetbundle;
     public string path;
     public int pictureIndex;
+    public static Object img;
 
     void Start()
     {
@@ -25,7 +26,7 @@ public class LoadAssetBundles : MonoBehaviour
     void CreateObjectFrombundle(string assetName)
     {
         var prefab = myLoadedAssetbundle.LoadAsset(assetName);
-        Instantiate(prefab);
+        img = Instantiate(prefab);
     }
 
 
@@ -37,6 +38,7 @@ public class LoadAssetBundles : MonoBehaviour
         }
         else
         {
+            Destroy(img);
             pictureIndex -= 1;
             CreateObjectFrombundle(pictureIndex.ToString());
         }
@@ -50,6 +52,7 @@ public class LoadAssetBundles : MonoBehaviour
         }
         else
         {
+            Destroy(img);
             pictureIndex += 1;
             CreateObjectFrombundle(pictureIndex.ToString());
         }
