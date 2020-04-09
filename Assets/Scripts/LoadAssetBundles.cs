@@ -37,7 +37,6 @@ public class LoadAssetBundles : MonoBehaviour
         }
         else
         {
-            Object.Destroy(pictureIndex.ToString());
             pictureIndex -= 1;
             CreateObjectFrombundle(pictureIndex.ToString());
         }
@@ -51,7 +50,6 @@ public class LoadAssetBundles : MonoBehaviour
         }
         else
         {
-            Object.Destroy(pictureIndex);
             pictureIndex += 1;
             CreateObjectFrombundle(pictureIndex.ToString());
         }
