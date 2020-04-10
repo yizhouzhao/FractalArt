@@ -1326,7 +1326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34c312b91bef7a34483e60aadb530678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  path: C:\Users\Jerry\AppData\LocalLow\DefaultCompany\FractalArt\images
+  path: C:\Users\Yizhou Zhao\AppData\LocalLow\DefaultCompany\FractalArt\images
   pictureIndex: 1
 --- !u!4 &1758970578
 Transform:
