@@ -21,7 +21,7 @@ public class CollageFraction : MonoBehaviour
         if(_Collage == null)
         {
             _Collage = GameObject.Find("Collage").GetComponent<CollageOrganizer>();
-            print(_Collage.gameObject.name);
+            //print(_Collage.gameObject.name);
         }
     }
 

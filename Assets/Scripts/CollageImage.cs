@@ -16,6 +16,14 @@ public class CollageImage : MonoBehaviour
 
     void Start()
     {
+        //Load asset bundle for debug
+        if(PlayerInfo.loadedAssetBundle == null)
+        {
+            string imageBundlePath = Application.persistentDataPath + "/raw_images";
+            PlayerInfo.loadedAssetBundle = AssetBundle.LoadFromFile(imageBundlePath); //could be anything: server, path, etc.
+            Debug.Log(PlayerInfo.loadedAssetBundle == null ? "Failed to load AssetBundle" : "Successfully loaded AssetBundle");
+        }
+
         LoadSprite("imgs/4");
 
         //sent info to collage organizing
@@ -35,9 +43,11 @@ public class CollageImage : MonoBehaviour
     public void LoadSprite(string fileName)
     {
         print("Collage image load sprite");
-        Texture2D texture = Resources.Load<Texture2D>(fileName);
+        Texture2D texture; //= Resources.Load<Texture2D>(fileName);
         //print(texture.width);
         //print(texture.height);
+        texture = PlayerInfo.loadedAssetBundle.LoadAsset<Texture2D>(PlayerInfo.pictureIndex.ToString());
+        //Sprite pictureSprite = prefab.game
 
         //cut the image into square size
         int newTextureSize = Mathf.Min(texture.width, texture.height);

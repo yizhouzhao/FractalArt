@@ -9,11 +9,12 @@ public class LoadAssetBundles : MonoBehaviour
     AssetBundle myLoadedAssetbundle;
     private string path;
     public int pictureIndex = 1;
-    public static Object img;
+  
+    public GameObject img;
 
     void Start()
     {
-        path = Application.persistentDataPath + "/images";
+        path = Application.persistentDataPath + "/raw_images";
         LoadAssetBundle(path);
         CreateObjectFrombundle(pictureIndex.ToString());
     }
@@ -22,12 +23,16 @@ public class LoadAssetBundles : MonoBehaviour
     {
         myLoadedAssetbundle = AssetBundle.LoadFromFile(bundleUrl); //could be anything: server, path, etc.
         Debug.Log(myLoadedAssetbundle == null ? "Failed to load AssetBundle" : "Successfully loaded AssetBundle");
+
+        //Save asset bundle to player info
+        PlayerInfo.loadedAssetBundle = myLoadedAssetbundle;
     }
 
     void CreateObjectFrombundle(string assetName)
     {
-        var prefab = myLoadedAssetbundle.LoadAsset(assetName);
-        img = Instantiate(prefab);
+        Texture2D texture = myLoadedAssetbundle.LoadAsset<Texture2D>(assetName);
+        SpriteRenderer spriteRenderer = img.GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 
 
@@ -39,7 +44,6 @@ public class LoadAssetBundles : MonoBehaviour
         }
         else
         {
-            Destroy(img);
             pictureIndex -= 1;
             CreateObjectFrombundle(pictureIndex.ToString());
         }
@@ -53,7 +57,6 @@ public class LoadAssetBundles : MonoBehaviour
         }
         else
         {
-            Destroy(img);
             pictureIndex += 1;
             CreateObjectFrombundle(pictureIndex.ToString());
         }
@@ -61,12 +64,13 @@ public class LoadAssetBundles : MonoBehaviour
 
     public void toGameScene()
     {
+        //save picture index
+        PlayerInfo.pictureIndex = pictureIndex;
         SceneManager.LoadScene("GameScene2222");
     }
 
     public void GoBack()
     {
-        Destroy(img);
         AssetBundle.UnloadAllAssetBundles(true);
         SceneManager.LoadScene("Menu");
     }

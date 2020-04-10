@@ -13,3 +13,14 @@ public class GFractalArt
     public static int puzzleImageSize = 512;
     public static int collageSize = 100;
 }
+
+
+public class PlayerInfo
+{
+    public static string playerName;
+
+    //image
+    public static AssetBundle loadedAssetBundle;
+    public static int pictureIndex = 3;
+
+}
