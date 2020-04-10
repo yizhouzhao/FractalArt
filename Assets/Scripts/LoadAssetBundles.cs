@@ -7,12 +7,13 @@ public class LoadAssetBundles : MonoBehaviour
 {
 
     AssetBundle myLoadedAssetbundle;
-    public string path;
+    string path;
     public int pictureIndex;
     public static Object img;
 
     void Start()
     {
+        path = Application.persistentDataPath + "/images";
         LoadAssetBundle(path);
         CreateObjectFrombundle(pictureIndex.ToString());
     }
