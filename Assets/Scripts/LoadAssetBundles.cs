@@ -7,8 +7,8 @@ public class LoadAssetBundles : MonoBehaviour
 {
 
     AssetBundle myLoadedAssetbundle;
-    string path;
-    public int pictureIndex;
+    private string path;
+    public int pictureIndex = 1;
     public static Object img;
 
     void Start()
@@ -63,5 +63,11 @@ public class LoadAssetBundles : MonoBehaviour
     {
         SceneManager.LoadScene("GameScene2222");
     }
-}
 
+    public void GoBack()
+    {
+        Destroy(img);
+        AssetBundle.UnloadAllAssetBundles(true);
+        SceneManager.LoadScene("Menu");
+    }
+}
