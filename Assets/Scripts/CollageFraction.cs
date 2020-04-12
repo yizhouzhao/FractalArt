@@ -10,11 +10,24 @@ public class CollageFraction : MonoBehaviour
     public static CollageOrganizer _Collage;
     public int collageId; //correct collage position id
     public int positionId; //current postion id
+    public Texture2D currentTexture2d;
 
     //Move by left button
     private Vector3 mOffset;
     private float mZCoord;
     private Vector3 currentPosition;
+
+    public CollageFraction(CollageFraction cFraction)
+    {
+        collageId = cFraction.collageId;
+        positionId = cFraction.positionId;
+        currentTexture2d = cFraction.currentTexture2d;
+        currentPosition = cFraction.currentPosition;
+
+        SetImageFromTexture2D(currentTexture2d);
+    }
+
+
 
     void Awake()
     {
@@ -85,6 +98,7 @@ public class CollageFraction : MonoBehaviour
     
     public void SetImageFromTexture2D(Texture2D tex2d)
     {
+        currentTexture2d = tex2d;
         SpriteRenderer spriteRenderer = this.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = Sprite.Create(tex2d, new Rect(0, 0, GFractalArt.collageSize, GFractalArt.collageSize), new Vector2(0.5f, 0.5f));
     }
