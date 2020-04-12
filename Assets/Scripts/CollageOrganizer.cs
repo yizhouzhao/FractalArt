@@ -68,7 +68,7 @@ public class CollageOrganizer : MonoBehaviour
     void Start()
     {
         //Random select collage to move to candidate positions
-        LoadLevel(1);
+        LoadLevel(0);
         
     }
 
@@ -207,7 +207,7 @@ public class CollageOrganizer : MonoBehaviour
             foreach (CollageFraction cFraction in collageFractionList)
             {
                 levelInfoList[currentLevelId].collageFractionList.Add(new CollageFraction(cFraction));
-            }
+            };
         }
         else
         {

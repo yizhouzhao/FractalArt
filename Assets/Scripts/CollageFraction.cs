@@ -3,6 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class CollageFractionInfo
+{
+    public int collageId;
+    public int positionId;
+    public Vector3 currentPosition;
+}
+
 public class CollageFraction : MonoBehaviour
 {
     //Collage
@@ -15,7 +23,7 @@ public class CollageFraction : MonoBehaviour
     //Move by left button
     private Vector3 mOffset;
     private float mZCoord;
-    private Vector3 currentPosition;
+    public Vector3 currentPosition;
 
     public CollageFraction(CollageFraction cFraction)
     {
@@ -75,6 +83,7 @@ public class CollageFraction : MonoBehaviour
             if (Vector3.Distance(this.transform.position, grid) < 0.3f)
             {
                 this.transform.position = grid;
+                currentPosition = this.transform.position;
                 this.positionId = i;
                 sticked = true;
             }
