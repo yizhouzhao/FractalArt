@@ -9,6 +9,7 @@ public class CollageFractionInfo
     public int collageId;
     public int positionId;
     public Vector3 currentPosition;
+    public Texture2D currentTexture2d;
 }
 
 public class CollageFraction : MonoBehaviour
@@ -23,24 +24,24 @@ public class CollageFraction : MonoBehaviour
     //Move by left button
     private Vector3 mOffset;
     private float mZCoord;
-    public Vector3 currentPosition;
 
-    public CollageFraction(CollageFraction cFraction)
+    //Get the summary information
+    public CollageFractionInfo GetFractionInfo()
     {
-        collageId = cFraction.collageId;
-        positionId = cFraction.positionId;
-        
-        //set location
-        currentPosition = cFraction.currentPosition;
-        
-        //set texture
-        currentTexture2d = cFraction.currentTexture2d;
-        
+        CollageFractionInfo cInfo = new CollageFractionInfo();
+        cInfo.collageId = collageId;
+        cInfo.positionId = positionId;
+        cInfo.currentPosition = this.transform.position;
+        cInfo.currentTexture2d = currentTexture2d;
+        return cInfo;
     }
 
-    public void SetTextureAndPosition()
+    public void SetTextureAndPositionFromInfo(CollageFractionInfo cInfo)
     {
-        this.transform.position = currentPosition;
+        this.collageId = cInfo.collageId;
+        this.positionId = cInfo.positionId;
+        this.transform.position = cInfo.currentPosition;
+        this.currentTexture2d = cInfo.currentTexture2d;
         SetImageFromTexture2D(currentTexture2d);
     }
 
@@ -83,7 +84,6 @@ public class CollageFraction : MonoBehaviour
             if (Vector3.Distance(this.transform.position, grid) < 0.3f)
             {
                 this.transform.position = grid;
-                currentPosition = this.transform.position;
                 this.positionId = i;
                 sticked = true;
             }
@@ -111,7 +111,6 @@ public class CollageFraction : MonoBehaviour
         //print("on mouse over");
         mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
         mOffset = gameObject.transform.position - GetMouseWorldPos();
-        currentPosition = this.transform.position;
     }
     
     public void SetImageFromTexture2D(Texture2D tex2d)

@@ -7,14 +7,14 @@ using UnityEngine;
 public class LevelCollageInfo
 {
     public int levelId;
-    public List<CollageFraction> collageFractionList;
+    public List<CollageFractionInfo> collageFractionInfoList;
     public Texture2D levelTexture;
     public int levelCollageSize;
 
 
     public LevelCollageInfo()
     {
-        collageFractionList = new List<CollageFraction>();
+        collageFractionInfoList = new List<CollageFractionInfo>();
     }
 }
 
@@ -180,7 +180,8 @@ public class CollageOrganizer : MonoBehaviour
     public void LoadLevel(int levelIndex)
     {
         currentLevelId = levelIndex;
-        if(levelInfoList[levelIndex].collageFractionList.Count == 0)
+        Debug.Log("Collage ORG Load level: " + levelIndex.ToString() + " Count: " + levelInfoList[currentLevelId].collageFractionInfoList.Count);
+        if (levelInfoList[levelIndex].collageFractionInfoList.Count == 0)
         {
             //see this level for the first time for empty list generate pieces and shuffle
             SetCollagePieces(levelIndex);
@@ -194,27 +195,42 @@ public class CollageOrganizer : MonoBehaviour
         {
             for(int i = 0; i < collageFractionList.Count; ++i)
             {
-                collageFractionList[i] = new CollageFraction(levelInfoList[levelIndex].collageFractionList[i]);
-                collageFractionList[i].SetTextureAndPosition();
+                collageFractionList[i].SetTextureAndPositionFromInfo(levelInfoList[levelIndex].collageFractionInfoList[i]);
             }
         }
     }
 
     public void SaveLevel()
     {
-        if (levelInfoList[currentLevelId].collageFractionList.Count == 0)
+        Debug.Log("Collage ORG save level: " + currentLevelId.ToString());
+
+        if (levelInfoList[currentLevelId].collageFractionInfoList.Count == 0)
         {
             foreach (CollageFraction cFraction in collageFractionList)
             {
-                levelInfoList[currentLevelId].collageFractionList.Add(new CollageFraction(cFraction));
-            };
+                levelInfoList[currentLevelId].collageFractionInfoList.Add(cFraction.GetFractionInfo());
+            }
         }
         else
         {
             for (int i = 0; i < collageFractionList.Count; ++i)
             {
-                levelInfoList[currentLevelId].collageFractionList[i] = new CollageFraction(collageFractionList[i]);
+                levelInfoList[currentLevelId].collageFractionInfoList[i] = collageFractionList[i].GetFractionInfo();
             }
         }
+    }
+
+    public void ToNextLevel()
+    {
+        SaveLevel();
+        currentLevelId = Math.Min(currentLevelId + 1, 2);
+        LoadLevel(currentLevelId);
+    }
+
+    public void ToLastLevel()
+    {
+        SaveLevel();
+        currentLevelId = Math.Max(currentLevelId - 1, 0);
+        LoadLevel(currentLevelId);
     }
 }
