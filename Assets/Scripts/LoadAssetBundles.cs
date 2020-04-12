@@ -71,7 +71,7 @@ public class LoadAssetBundles : MonoBehaviour
 
     public void GoBack()
     {
-        AssetBundle.UnloadAllAssetBundles(true);
+     //   AssetBundle.UnloadAllAssetBundles(true);
         SceneManager.LoadScene("Menu");
     }
 }

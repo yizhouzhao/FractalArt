@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
+        AssetBundle.UnloadAllAssetBundles(true);
         SceneManager.LoadScene("LevelSelection");
     }
 }
