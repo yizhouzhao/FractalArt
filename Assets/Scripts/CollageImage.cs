@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,14 +25,37 @@ public class CollageImage : MonoBehaviour
             Debug.Log(PlayerInfo.loadedAssetBundle == null ? "Failed to load AssetBundle" : "Successfully loaded AssetBundle");
         }
 
-        LoadSprite("imgs/4");
+        LoadSprite();
 
+        SetLevels();
+    }
+
+    private void SetLevels()
+    {
         //sent info to collage organizing
-        collageOrg.currentTexture = targetTexture;
-        collageOrg.currentTextureSize = targetTexture.width;
+        LevelCollageInfo initLevel = new LevelCollageInfo();
+        initLevel.levelId = 0;
+        initLevel.levelTexture = targetTexture;
+        initLevel.levelCollageSize = targetTexture.width / 4;
 
-        collageOrg.SetCollagePieces();
+        collageOrg.currentLevelId = 0;
+        collageOrg.levelInfoList.Add(initLevel);
 
+        //generate second level
+        LevelCollageInfo secondLevel = new LevelCollageInfo();
+        secondLevel.levelId = 1;
+        int randomCollageIndex = UnityEngine.Random.Range(0, 16);
+        secondLevel.levelTexture = collageOrg.GetTexture2DForCollage(0, randomCollageIndex);
+        secondLevel.levelCollageSize = targetTexture.width / 4 / 4;
+        collageOrg.levelInfoList.Add(secondLevel);
+
+        //generate third level
+        LevelCollageInfo thirdLevel = new LevelCollageInfo();
+        thirdLevel.levelId = 2;
+        randomCollageIndex = UnityEngine.Random.Range(0, 16);
+        thirdLevel.levelTexture = collageOrg.GetTexture2DForCollage(1, randomCollageIndex);
+        thirdLevel.levelCollageSize = targetTexture.width / 4 / 4 / 4;
+        collageOrg.levelInfoList.Add(thirdLevel);
     }
 
     // Update is called once per frame
@@ -40,7 +64,7 @@ public class CollageImage : MonoBehaviour
         
     }
 
-    public void LoadSprite(string fileName)
+    public void LoadSprite()
     {
         print("Collage image load sprite");
         Texture2D texture; //= Resources.Load<Texture2D>(fileName);

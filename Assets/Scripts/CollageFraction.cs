@@ -21,9 +21,18 @@ public class CollageFraction : MonoBehaviour
     {
         collageId = cFraction.collageId;
         positionId = cFraction.positionId;
-        currentTexture2d = cFraction.currentTexture2d;
+        
+        //set location
         currentPosition = cFraction.currentPosition;
+        
+        //set texture
+        currentTexture2d = cFraction.currentTexture2d;
+        
+    }
 
+    public void SetTextureAndPosition()
+    {
+        this.transform.position = currentPosition;
         SetImageFromTexture2D(currentTexture2d);
     }
 

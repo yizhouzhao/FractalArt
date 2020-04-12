@@ -3,6 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class LevelCollageInfo
+{
+    public int levelId;
+    public List<CollageFraction> collageFractionList;
+    public Texture2D levelTexture;
+    public int levelCollageSize;
+
+
+    public LevelCollageInfo()
+    {
+        collageFractionList = new List<CollageFraction>();
+    }
+}
+
 public class CollageOrganizer : MonoBehaviour
 {
     //collage pieces 
@@ -11,9 +26,13 @@ public class CollageOrganizer : MonoBehaviour
     public List<CollageFraction> candidateList;
     public List<Vector3> gridPointList;
 
-    [Header("Picture")]
-    public Texture2D currentTexture;
-    public int currentTextureSize;
+    //[Header("Picture")]
+    //public Texture2D currentTexture;
+    //public int currentTextureSize;
+
+    [Header("Level")]
+    public List<LevelCollageInfo> levelInfoList = new List<LevelCollageInfo>();
+    public int currentLevelId;
 
     void Awake()
     {
@@ -49,7 +68,7 @@ public class CollageOrganizer : MonoBehaviour
     void Start()
     {
         //Random select collage to move to candidate positions
-        ShuffleCollagePieces();
+        LoadLevel(1);
         
     }
 
@@ -129,18 +148,19 @@ public class CollageOrganizer : MonoBehaviour
     }
 
     //Set up pictures for collage pieces
-    public void SetCollagePieces()
+    public void SetCollagePieces(int levelIndex)
     {
         for(int i = 0; i < collageFractionList.Count; i++)
         {
-            Texture2D cTex = GetTexture2DForCollage(i);
+            Texture2D cTex = GetTexture2DForCollage(levelIndex, i);
             collageFractionList[i].SetImageFromTexture2D(cTex);
         }
     }
 
-    public Texture2D GetTexture2DForCollage(int collageIndex)
+    public Texture2D GetTexture2DForCollage(int levelIndex, int collageIndex)
     {
-        int collageTempSize = GFractalArt.puzzleImageSize / 4;
+        Texture2D currentTexture = levelInfoList[levelIndex].levelTexture;
+        int collageTempSize = levelInfoList[levelIndex].levelCollageSize;
         Texture2D collageTex =  new Texture2D(collageTempSize, collageTempSize, currentTexture.format, true);
         int xOffset = collageIndex % 4;
         int yOffset = collageIndex / 4;
@@ -155,5 +175,46 @@ public class CollageOrganizer : MonoBehaviour
         collageTex.Apply();
 
         return CollageImage.ScaleTexture(collageTex, GFractalArt.collageSize, GFractalArt.collageSize);
+    }
+
+    public void LoadLevel(int levelIndex)
+    {
+        currentLevelId = levelIndex;
+        if(levelInfoList[levelIndex].collageFractionList.Count == 0)
+        {
+            //see this level for the first time for empty list generate pieces and shuffle
+            SetCollagePieces(levelIndex);
+            ShuffleCollagePieces();
+            //foreach(CollageFraction cFraction in collageFractionList)
+            //{
+            //    levelInfoList[levelIndex].collageFractionList.Add(cFraction);
+            //}
+        }
+        else
+        {
+            for(int i = 0; i < collageFractionList.Count; ++i)
+            {
+                collageFractionList[i] = new CollageFraction(levelInfoList[levelIndex].collageFractionList[i]);
+                collageFractionList[i].SetTextureAndPosition();
+            }
+        }
+    }
+
+    public void SaveLevel()
+    {
+        if (levelInfoList[currentLevelId].collageFractionList.Count == 0)
+        {
+            foreach (CollageFraction cFraction in collageFractionList)
+            {
+                levelInfoList[currentLevelId].collageFractionList.Add(new CollageFraction(cFraction));
+            }
+        }
+        else
+        {
+            for (int i = 0; i < collageFractionList.Count; ++i)
+            {
+                levelInfoList[currentLevelId].collageFractionList[i] = new CollageFraction(collageFractionList[i]);
+            }
+        }
     }
 }
