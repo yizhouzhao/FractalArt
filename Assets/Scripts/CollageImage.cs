@@ -32,6 +32,8 @@ public class CollageImage : MonoBehaviour
 
     private void SetLevels()
     {
+        int randomCollageIndex;
+
         //sent info to collage organizing
         LevelCollageInfo initLevel = new LevelCollageInfo();
         initLevel.levelId = 0;
@@ -39,23 +41,31 @@ public class CollageImage : MonoBehaviour
         initLevel.levelCollageSize = targetTexture.width / 4;
 
         collageOrg.currentLevelId = 0;
-        collageOrg.levelInfoList.Add(initLevel);
+        collageOrg.currentLevelInfo = initLevel;
 
         //generate second level
         LevelCollageInfo secondLevel = new LevelCollageInfo();
         secondLevel.levelId = 1;
-        int randomCollageIndex = UnityEngine.Random.Range(0, 16);
-        secondLevel.levelTexture = collageOrg.GetTexture2DForCollage(0, randomCollageIndex);
+        randomCollageIndex = UnityEngine.Random.Range(0, 16);
+        secondLevel.levelTexture = collageOrg.GetTexture2DForCollage(initLevel, randomCollageIndex);
         secondLevel.levelCollageSize = targetTexture.width / 4 / 4;
-        collageOrg.levelInfoList.Add(secondLevel);
+
+        //link parent
+        secondLevel.parentLevelInfo = initLevel;
+        initLevel.childrenLevelInfo.Add(secondLevel);
+        initLevel.childrenLevelCollageIndexes.Add(randomCollageIndex);
 
         //generate third level
         LevelCollageInfo thirdLevel = new LevelCollageInfo();
         thirdLevel.levelId = 2;
         randomCollageIndex = UnityEngine.Random.Range(0, 16);
-        thirdLevel.levelTexture = collageOrg.GetTexture2DForCollage(1, randomCollageIndex);
+        thirdLevel.levelTexture = collageOrg.GetTexture2DForCollage(secondLevel, randomCollageIndex);
         thirdLevel.levelCollageSize = targetTexture.width / 4 / 4 / 4;
-        collageOrg.levelInfoList.Add(thirdLevel);
+
+        //link parent
+        thirdLevel.parentLevelInfo = secondLevel;
+        secondLevel.childrenLevelInfo.Add(thirdLevel);
+        secondLevel.childrenLevelCollageIndexes.Add(randomCollageIndex);
     }
 
     // Update is called once per frame
