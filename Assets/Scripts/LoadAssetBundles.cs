@@ -66,7 +66,7 @@ public class LoadAssetBundles : MonoBehaviour
     {
         //save picture index
         PlayerInfo.pictureIndex = pictureIndex;
-        SceneManager.LoadScene("GameScene2222");
+        SceneManager.LoadScene("GameScene3333");
     }
 
     public void GoBack()

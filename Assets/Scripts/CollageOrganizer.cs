@@ -180,7 +180,7 @@ public class CollageOrganizer : MonoBehaviour
     public void LoadLevel(int levelIndex)
     {
         currentLevelId = levelIndex;
-        Debug.Log("Collage ORG Load level: " + levelIndex.ToString() + " Count: " + levelInfoList[currentLevelId].collageFractionInfoList.Count);
+        //Debug.Log("Collage ORG Load level: " + levelIndex.ToString() + " Count: " + levelInfoList[currentLevelId].collageFractionInfoList.Count);
         if (levelInfoList[levelIndex].collageFractionInfoList.Count == 0)
         {
             //see this level for the first time for empty list generate pieces and shuffle
@@ -202,7 +202,7 @@ public class CollageOrganizer : MonoBehaviour
 
     public void SaveLevel()
     {
-        Debug.Log("Collage ORG save level: " + currentLevelId.ToString());
+        //Debug.Log("Collage ORG save level: " + currentLevelId.ToString());
 
         if (levelInfoList[currentLevelId].collageFractionInfoList.Count == 0)
         {

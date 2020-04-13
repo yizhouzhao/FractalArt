@@ -5228,8 +5228,8 @@ MonoBehaviour:
   - {fileID: 1637870121}
   - {fileID: 1110345983}
   gridPointList: []
-  currentTexture: {fileID: 0}
-  currentTextureSize: 0
+  levelInfoList: []
+  currentLevelId: 0
 --- !u!1 &1508469598
 GameObject:
   m_ObjectHideFlags: 0
