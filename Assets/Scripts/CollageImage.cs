@@ -28,6 +28,11 @@ public class CollageImage : MonoBehaviour
         LoadSprite();
 
         SetLevels();
+
+        //Random select collage to move to candidate positions
+        collageOrg.LoadLevel(collageOrg.currentLevelInfo);
+        collageOrg.SaveLevel();
+
     }
 
     private void SetLevels()

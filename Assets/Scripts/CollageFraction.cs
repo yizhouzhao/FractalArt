@@ -25,6 +25,9 @@ public class CollageFraction : MonoBehaviour
     private Vector3 mOffset;
     private float mZCoord;
 
+    [Header("Debug only")]
+    public bool debug;
+
     //Get the summary information
     public CollageFractionInfo GetFractionInfo()
     {
@@ -59,6 +62,23 @@ public class CollageFraction : MonoBehaviour
     void Start()
     {
         StickToGrid();
+
+        if (debug)
+        {
+            StartCoroutine(DelayStart());
+        }
+    }
+
+    IEnumerator DelayStart()
+    {
+       
+        yield return new WaitForSeconds(1f);
+        Debug.Log("DDDDDDDEBUG");
+        //For debug use
+        Texture2D debugTex = _Collage.currentLevelInfo.GetSketch();
+
+        SetImageFromTexture2D(CollageImage.ScaleTexture(debugTex, GFractalArt.collageSize, GFractalArt.collageSize));
+        yield return null;
     }
 
     private Vector3 GetMouseWorldPos()
@@ -116,7 +136,8 @@ public class CollageFraction : MonoBehaviour
     public void SetImageFromTexture2D(Texture2D tex2d)
     {
         currentTexture2d = tex2d;
+        Texture2D scaledTex = CollageImage.ScaleTexture(currentTexture2d, GFractalArt.collageSize, GFractalArt.collageSize);
         SpriteRenderer spriteRenderer = this.GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = Sprite.Create(tex2d, new Rect(0, 0, GFractalArt.collageSize, GFractalArt.collageSize), new Vector2(0.5f, 0.5f));
+        spriteRenderer.sprite = Sprite.Create(scaledTex, new Rect(0, 0, GFractalArt.collageSize, GFractalArt.collageSize), new Vector2(0.5f, 0.5f));
     }
 }

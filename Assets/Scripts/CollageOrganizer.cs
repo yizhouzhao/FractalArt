@@ -16,6 +16,33 @@ public class LevelCollageInfo
     public List<LevelCollageInfo> childrenLevelInfo = new List<LevelCollageInfo>();
     public List<int> childrenLevelCollageIndexes = new List<int>();
 
+    public Texture2D GetSketch()
+    {
+        Debug.Log("here" + collageFractionInfoList.Count + " " + levelTexture.height + " " + levelTexture.width);
+        Texture2D sketch = new Texture2D(levelTexture.width, levelTexture.height, levelTexture.format, true);
+        foreach(CollageFractionInfo collage in collageFractionInfoList)
+        {
+            int positionId = collage.positionId;
+            if(positionId != -1)
+            {
+                Debug.Log("here has some ids");
+                int xOffset = positionId % 4;
+                int yOffset = positionId / 4;
+                //send picture to sketches
+                Texture2D tex = collage.currentTexture2d;
+                for (int i = 0; i < tex.width; i++)
+                {
+                    for (int j = 0; j < tex.height; j++)
+                    {
+                        Color color = tex.GetPixel(i, j);
+                        sketch.SetPixel(xOffset * levelCollageSize + i, yOffset * levelCollageSize + j, color);
+                    }
+                }
+            }
+        }
+        sketch.Apply();
+        return sketch;
+    }
 }
 
 public class CollageOrganizer : MonoBehaviour
@@ -68,8 +95,6 @@ public class CollageOrganizer : MonoBehaviour
 
     void Start()
     {
-        //Random select collage to move to candidate positions
-        LoadLevel(currentLevelInfo);
         
     }
 
@@ -175,7 +200,7 @@ public class CollageOrganizer : MonoBehaviour
         }
         collageTex.Apply();
 
-        return CollageImage.ScaleTexture(collageTex, GFractalArt.collageSize, GFractalArt.collageSize);
+        return collageTex;
     }
 
     public void LoadLevel(LevelCollageInfo levelInfo)
