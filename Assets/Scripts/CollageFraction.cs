@@ -21,6 +21,9 @@ public class CollageFraction : MonoBehaviour
     public int positionId; //current postion id
     public Texture2D currentTexture2d;
 
+    [Header("Level Information")]
+    public bool canEnterNextLevel = false;
+
     //Move by left button
     private Vector3 mOffset;
     private float mZCoord;
@@ -66,6 +69,22 @@ public class CollageFraction : MonoBehaviour
         if (debug)
         {
             StartCoroutine(DelayStart());
+        }
+    }
+
+    void Update()
+    {
+        //Debug right click
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (canEnterNextLevel)
+            {
+                Debug.Log("Pressed right click enter next level.");
+                int nextLevelIndex = _Collage.currentLevelInfo.childrenLevelCollageIndexes.IndexOf(collageId);
+                LevelCollageInfo nextLevel = _Collage.currentLevelInfo.childrenLevelInfo[nextLevelIndex];
+                _Collage.LoadLevel(nextLevel);
+            }
+         
         }
     }
 
@@ -135,8 +154,7 @@ public class CollageFraction : MonoBehaviour
     
     public void SetImageFromTexture2D(Texture2D tex2d)
     {
-        currentTexture2d = tex2d;
-        Texture2D scaledTex = CollageImage.ScaleTexture(currentTexture2d, GFractalArt.collageSize, GFractalArt.collageSize);
+        Texture2D scaledTex = CollageImage.ScaleTexture(tex2d, GFractalArt.collageSize, GFractalArt.collageSize);
         SpriteRenderer spriteRenderer = this.GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = Sprite.Create(scaledTex, new Rect(0, 0, GFractalArt.collageSize, GFractalArt.collageSize), new Vector2(0.5f, 0.5f));
     }

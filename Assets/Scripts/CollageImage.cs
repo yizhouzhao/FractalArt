@@ -23,6 +23,7 @@ public class CollageImage : MonoBehaviour
             string imageBundlePath = Application.persistentDataPath + "/raw_images";
             PlayerInfo.loadedAssetBundle = AssetBundle.LoadFromFile(imageBundlePath); //could be anything: server, path, etc.
             Debug.Log(PlayerInfo.loadedAssetBundle == null ? "Failed to load AssetBundle" : "Successfully loaded AssetBundle");
+            PlayerInfo.questionTexture = PlayerInfo.loadedAssetBundle.LoadAsset<Texture2D>("question_mark");
         }
 
         LoadSprite();
@@ -33,6 +34,32 @@ public class CollageImage : MonoBehaviour
         collageOrg.LoadLevel(collageOrg.currentLevelInfo);
         collageOrg.SaveLevel();
 
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    public void LoadSprite()
+    {
+        print("Collage image load sprite");
+        Texture2D texture; //= Resources.Load<Texture2D>(fileName);
+        //print(texture.width);
+        //print(texture.height);
+        texture = PlayerInfo.loadedAssetBundle.LoadAsset<Texture2D>(PlayerInfo.pictureIndex.ToString());
+        //Sprite pictureSprite = prefab.game
+
+        //cut the image into square size
+        int newTextureSize = Mathf.Min(texture.width, texture.height);
+        Texture2D destTex = new Texture2D(newTextureSize, newTextureSize);
+        Color[] pix = texture.GetPixels(0, 0, newTextureSize, newTextureSize);
+        destTex.SetPixels(pix);
+        destTex.Apply();
+
+        targetTexture= ScaleTexture(destTex, GFractalArt.puzzleImageSize, GFractalArt.puzzleImageSize);
+        PaintingSpriteRenderer.sprite = Sprite.Create(targetTexture, new Rect(0, 0, GFractalArt.puzzleImageSize, GFractalArt.puzzleImageSize), new Vector2(0.5f, 0.5f));
     }
 
     private void SetLevels()
@@ -71,32 +98,6 @@ public class CollageImage : MonoBehaviour
         thirdLevel.parentLevelInfo = secondLevel;
         secondLevel.childrenLevelInfo.Add(thirdLevel);
         secondLevel.childrenLevelCollageIndexes.Add(randomCollageIndex);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void LoadSprite()
-    {
-        print("Collage image load sprite");
-        Texture2D texture; //= Resources.Load<Texture2D>(fileName);
-        //print(texture.width);
-        //print(texture.height);
-        texture = PlayerInfo.loadedAssetBundle.LoadAsset<Texture2D>(PlayerInfo.pictureIndex.ToString());
-        //Sprite pictureSprite = prefab.game
-
-        //cut the image into square size
-        int newTextureSize = Mathf.Min(texture.width, texture.height);
-        Texture2D destTex = new Texture2D(newTextureSize, newTextureSize);
-        Color[] pix = texture.GetPixels(0, 0, newTextureSize, newTextureSize);
-        destTex.SetPixels(pix);
-        destTex.Apply();
-
-        targetTexture= ScaleTexture(destTex, GFractalArt.puzzleImageSize, GFractalArt.puzzleImageSize);
-        PaintingSpriteRenderer.sprite = Sprite.Create(targetTexture, new Rect(0, 0, GFractalArt.puzzleImageSize, GFractalArt.puzzleImageSize), new Vector2(0.5f, 0.5f));
     }
 
 

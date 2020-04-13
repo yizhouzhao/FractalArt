@@ -11,6 +11,8 @@ public class LevelCollageInfo
     public Texture2D levelTexture;
     public int levelCollageSize;
 
+    public bool visited = false;
+
     //Tree structure To NEXT LEVEL
     public LevelCollageInfo parentLevelInfo;
     public List<LevelCollageInfo> childrenLevelInfo = new List<LevelCollageInfo>();
@@ -18,14 +20,14 @@ public class LevelCollageInfo
 
     public Texture2D GetSketch()
     {
-        Debug.Log("here" + collageFractionInfoList.Count + " " + levelTexture.height + " " + levelTexture.width);
+        //Debug.Log("here" + collageFractionInfoList.Count + " " + levelTexture.height + " " + levelTexture.width);
         Texture2D sketch = new Texture2D(levelTexture.width, levelTexture.height, levelTexture.format, true);
         foreach(CollageFractionInfo collage in collageFractionInfoList)
         {
             int positionId = collage.positionId;
             if(positionId != -1)
             {
-                Debug.Log("here has some ids");
+                //Debug.Log("here has some ids");
                 int xOffset = positionId % 4;
                 int yOffset = positionId / 4;
                 //send picture to sketches
@@ -179,7 +181,20 @@ public class CollageOrganizer : MonoBehaviour
         for(int i = 0; i < collageFractionList.Count; i++)
         {
             Texture2D cTex = GetTexture2DForCollage(levelInfo, i);
-            collageFractionList[i].SetImageFromTexture2D(cTex);
+            collageFractionList[i].currentTexture2d = cTex;
+            if (currentLevelInfo.childrenLevelCollageIndexes.Contains(i))
+            {
+                if (!currentLevelInfo.childrenLevelInfo[currentLevelInfo.childrenLevelCollageIndexes.IndexOf(i)].visited)
+                {
+                    collageFractionList[i].canEnterNextLevel = true;
+                    collageFractionList[i].SetImageFromTexture2D(PlayerInfo.questionTexture);
+                }
+            }
+            else
+            {      
+                collageFractionList[i].SetImageFromTexture2D(cTex);
+            }
+
         }
     }
 

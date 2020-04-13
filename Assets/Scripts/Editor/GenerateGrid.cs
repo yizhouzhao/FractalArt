@@ -53,7 +53,7 @@ public class GenerateGrid : Editor
                 GameObject gridObject = Instantiate(_gridPrefab, gameBoard.transform);
 
                 Debug.Log("Editor" + gridObject.transform.position);
-                gridObject.transform.position = new Vector3(x, y, 0.1f);
+                gridObject.transform.position = new Vector3(x, y, z);
             }
         }
     }
