@@ -86,7 +86,7 @@ public class CollageFraction : MonoBehaviour
                     isRightSelected = false;
                     //Debug.Log("Pressed right click enter next level." + _Collage.currentLevelInfo.levelId);
                     //Debug.Log(_Collage.currentLevelInfo.childrenLevelCollageIndexes);
-                    Debug.Log(collageId);
+                    //Debug.Log(collageId);
                     int nextLevelIndex = _Collage.currentLevelInfo.childrenLevelCollageIndexes.IndexOf(collageId);
                     //Debug.Log("nextLevelIndex " + nextLevelIndex);
                     LevelCollageInfo nextLevel = _Collage.currentLevelInfo.childrenLevelInfo[nextLevelIndex];

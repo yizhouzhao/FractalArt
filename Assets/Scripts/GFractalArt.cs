@@ -45,7 +45,7 @@ public class PlayerInfo
 
     //image
     public static AssetBundle loadedAssetBundle;
-    public static int pictureIndex = 1;
+    public static int pictureIndex = 2;
     public static Texture2D questionTexture; //hold question template
 
 

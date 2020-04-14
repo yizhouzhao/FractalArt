@@ -64,7 +64,6 @@ public class CollageImage : MonoBehaviour
 
     private void SetLevels()
     {
-        int randomCollageIndex;
         int levelCount = 0;
 
         //sent info to collage organizing
