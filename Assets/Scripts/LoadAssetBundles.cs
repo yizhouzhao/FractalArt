@@ -26,6 +26,7 @@ public class LoadAssetBundles : MonoBehaviour
 
         //Save asset bundle to player info
         PlayerInfo.loadedAssetBundle = myLoadedAssetbundle;
+        PlayerInfo.questionTexture = PlayerInfo.loadedAssetBundle.LoadAsset<Texture2D>("question_mark");
     }
 
     void CreateObjectFrombundle(string assetName)
