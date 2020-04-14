@@ -24,14 +24,28 @@ public class LevelCollageInfo
         Texture2D sketch = new Texture2D(levelTexture.width, levelTexture.height, levelTexture.format, true);
         foreach(CollageFractionInfo collage in collageFractionInfoList)
         {
+            int nextIndex = childrenLevelCollageIndexes.IndexOf(collage.collageId);
             int positionId = collage.positionId;
             if(positionId != -1)
             {
                 //Debug.Log("here has some ids");
                 int xOffset = positionId % 4;
                 int yOffset = positionId / 4;
-                //send picture to sketches
                 Texture2D tex = collage.currentTexture2d;
+                if (nextIndex != -1)
+                {
+                    LevelCollageInfo childLevel = childrenLevelInfo[nextIndex];
+                    if (!childLevel.visited)
+                    {
+                        tex = CollageImage.ScaleTexture(PlayerInfo.questionTexture, tex.width, tex.height);
+                    }
+                    else
+                    {
+                        tex = CollageImage.ScaleTexture(childLevel.GetSketch(), tex.width, tex.height);
+                    }
+                }
+                //send picture to sketches
+                
                 for (int i = 0; i < tex.width; i++)
                 {
                     for (int j = 0; j < tex.height; j++)
