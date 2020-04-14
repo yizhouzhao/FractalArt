@@ -49,7 +49,16 @@ public class CollageImage : MonoBehaviour
         Texture2D texture; //= Resources.Load<Texture2D>(fileName);
         //print(texture.width);
         //print(texture.height);
-        texture = PlayerInfo.loadedAssetBundle.LoadAsset<Texture2D>(PlayerInfo.pictureIndex.ToString());
+        int pictureIndex;
+        if(PlayerInfo.pictureIndex > 0)
+        {
+            pictureIndex = PlayerInfo.pictureIndex;
+        }
+        else
+        {
+            pictureIndex = UnityEngine.Random.Range(1, 11);
+        }
+        texture = PlayerInfo.loadedAssetBundle.LoadAsset<Texture2D>(pictureIndex.ToString());
         //Sprite pictureSprite = prefab.game
 
         //cut the image into square size
