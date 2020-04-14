@@ -95,6 +95,16 @@ public class CollageOrganizer : MonoBehaviour
         }
     }
 
+    //set piece to grid one by one
+    public void SequentiallySetPieceToGrid()
+    {
+        for(int i = 0; i < collageFractionList.Count; ++i)
+        {
+            collageFractionList[i].gameObject.transform.position = gridPointList[i];
+            collageFractionList[i].StickToGrid();
+        }
+    }
+
     void Start()
     {
         
@@ -165,13 +175,8 @@ public class CollageOrganizer : MonoBehaviour
     public int GetCollageScore()
     {
         int score = 0;
-        foreach(CollageFraction collageFraction in collageFractionList)
-        {
-            if(collageFraction.positionId == collageFraction.collageId)
-            {
-                score++;
-            }
-        }
+
+        //To do
         return score;
     }
 
@@ -184,10 +189,16 @@ public class CollageOrganizer : MonoBehaviour
             collageFractionList[i].currentTexture2d = cTex;
             if (currentLevelInfo.childrenLevelCollageIndexes.Contains(i))
             {
-                if (!currentLevelInfo.childrenLevelInfo[currentLevelInfo.childrenLevelCollageIndexes.IndexOf(i)].visited)
+                LevelCollageInfo child = currentLevelInfo.childrenLevelInfo[currentLevelInfo.childrenLevelCollageIndexes.IndexOf(i)];
+                if (!child.visited)
                 {
                     collageFractionList[i].canEnterNextLevel = true;
                     collageFractionList[i].SetImageFromTexture2D(PlayerInfo.questionTexture);
+                }
+                else
+                {
+                    Texture2D sketch = child.GetSketch();
+                    collageFractionList[i].SetImageFromTexture2D(sketch);
                 }
             }
             else
@@ -221,22 +232,34 @@ public class CollageOrganizer : MonoBehaviour
     public void LoadLevel(LevelCollageInfo levelInfo)
     {
         currentLevelInfo = levelInfo;
+        currentLevelInfo.visited = true;
         //Debug.Log("Collage ORG Load level: " + levelIndex.ToString() + " Count: " + levelInfoList[currentLevelId].collageFractionInfoList.Count);
         if (levelInfo.collageFractionInfoList.Count == 0)
         {
             //see this level for the first time for empty list generate pieces and shuffle
             SetCollagePieces(levelInfo);
+            SequentiallySetPieceToGrid();
             ShuffleCollagePieces();
-            //foreach(CollageFraction cFraction in collageFractionList)
-            //{
-            //    levelInfoList[levelIndex].collageFractionList.Add(cFraction);
-            //}
+
         }
         else
         {
             for(int i = 0; i < collageFractionList.Count; ++i)
             {
                 collageFractionList[i].SetTextureAndPositionFromInfo(levelInfo.collageFractionInfoList[i]);
+                if (currentLevelInfo.childrenLevelCollageIndexes.Contains(i))
+                {
+                    LevelCollageInfo child = currentLevelInfo.childrenLevelInfo[currentLevelInfo.childrenLevelCollageIndexes.IndexOf(i)];
+                    if (!child.visited)
+                    {
+                        collageFractionList[i].SetImageFromTexture2D(PlayerInfo.questionTexture);
+                    }
+                    else
+                    {
+                        Texture2D sketch = child.GetSketch();
+                        collageFractionList[i].SetImageFromTexture2D(sketch);
+                    }
+                }
             }
         }
     }
@@ -261,13 +284,10 @@ public class CollageOrganizer : MonoBehaviour
         }
     }
 
-    public void ToNextLevel()
+    public void LoadNextLevel(LevelCollageInfo levelInfo)
     {
         SaveLevel();
-        if(currentLevelInfo.childrenLevelInfo.Count > 0)
-        {
-            LoadLevel(currentLevelInfo.childrenLevelInfo[0]);
-        }
+        LoadLevel(levelInfo);
     }
 
     public void ToLastLevel()

@@ -30,6 +30,7 @@ public class CollageFraction : MonoBehaviour
 
     [Header("Debug only")]
     public bool debug;
+    private bool isRightSelected = false;
 
     //Get the summary information
     public CollageFractionInfo GetFractionInfo()
@@ -74,17 +75,24 @@ public class CollageFraction : MonoBehaviour
 
     void Update()
     {
+
         //Debug right click
-        if (Input.GetMouseButtonDown(1))
+        if (isRightSelected)
         {
-            if (canEnterNextLevel)
+            if (Input.GetMouseButtonUp(1))
             {
-                Debug.Log("Pressed right click enter next level.");
-                int nextLevelIndex = _Collage.currentLevelInfo.childrenLevelCollageIndexes.IndexOf(collageId);
-                LevelCollageInfo nextLevel = _Collage.currentLevelInfo.childrenLevelInfo[nextLevelIndex];
-                _Collage.LoadLevel(nextLevel);
+                if (canEnterNextLevel)
+                {
+                    isRightSelected = false;
+                    //Debug.Log("Pressed right click enter next level." + _Collage.currentLevelInfo.levelId);
+                    //Debug.Log(_Collage.currentLevelInfo.childrenLevelCollageIndexes);
+                    //Debug.Log(collageId);
+                    int nextLevelIndex = _Collage.currentLevelInfo.childrenLevelCollageIndexes.IndexOf(collageId);
+                    //Debug.Log("nextLevelIndex " + nextLevelIndex);
+                    LevelCollageInfo nextLevel = _Collage.currentLevelInfo.childrenLevelInfo[nextLevelIndex];
+                    _Collage.LoadNextLevel(nextLevel);
+                }
             }
-         
         }
     }
 
@@ -92,7 +100,7 @@ public class CollageFraction : MonoBehaviour
     {
        
         yield return new WaitForSeconds(1f);
-        Debug.Log("DDDDDDDEBUG");
+        //Debug.Log("DDDDDDDEBUG");
         //For debug use
         Texture2D debugTex = _Collage.currentLevelInfo.GetSketch();
 
@@ -150,6 +158,11 @@ public class CollageFraction : MonoBehaviour
         //print("on mouse over");
         mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
         mOffset = gameObject.transform.position - GetMouseWorldPos();
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            isRightSelected = true;
+        }
     }
     
     public void SetImageFromTexture2D(Texture2D tex2d)

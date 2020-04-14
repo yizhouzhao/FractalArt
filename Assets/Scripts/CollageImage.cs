@@ -64,11 +64,11 @@ public class CollageImage : MonoBehaviour
 
     private void SetLevels()
     {
-        int randomCollageIndex;
+        int levelCount = 0;
 
         //sent info to collage organizing
         LevelCollageInfo initLevel = new LevelCollageInfo();
-        initLevel.levelId = 0;
+        initLevel.levelId = levelCount++;
         initLevel.levelTexture = targetTexture;
         initLevel.levelCollageSize = targetTexture.width / 4;
 
@@ -76,28 +76,55 @@ public class CollageImage : MonoBehaviour
         collageOrg.currentLevelInfo = initLevel;
 
         //generate second level
-        LevelCollageInfo secondLevel = new LevelCollageInfo();
-        secondLevel.levelId = 1;
-        randomCollageIndex = UnityEngine.Random.Range(0, 16);
-        secondLevel.levelTexture = collageOrg.GetTexture2DForCollage(initLevel, randomCollageIndex);
-        secondLevel.levelCollageSize = targetTexture.width / 4 / 4;
+        List<int> numberList = new List<int>();
+        int count = collageOrg.collageFractionList.Count;
+        for (int i = 0; i < count; i++)
+        {
+            numberList.Add(i);
+        }
 
-        //link parent
-        secondLevel.parentLevelInfo = initLevel;
-        initLevel.childrenLevelInfo.Add(secondLevel);
-        initLevel.childrenLevelCollageIndexes.Add(randomCollageIndex);
+        List<int> selectedNumberList = GFractalArt.ChooseFrom<int>(numberList, count, PlayerInfo.first_level_width);
+
+        foreach(int selectedNumber in selectedNumberList)
+        {
+            LevelCollageInfo secondLevel = new LevelCollageInfo();
+            secondLevel.levelId = levelCount++;
+            secondLevel.levelTexture = collageOrg.GetTexture2DForCollage(initLevel, selectedNumber);
+            secondLevel.levelCollageSize = targetTexture.width / 4 / 4;
+
+            //link parent
+            secondLevel.parentLevelInfo = initLevel;
+            initLevel.childrenLevelInfo.Add(secondLevel);
+            initLevel.childrenLevelCollageIndexes.Add(selectedNumber);
+
+            List<int> selectedNumberList2 = GFractalArt.ChooseFrom<int>(numberList, count, PlayerInfo.second_level_width);
+
+            foreach (int selectedNumber2 in selectedNumberList2)
+            {
+                LevelCollageInfo thirdLevel = new LevelCollageInfo();
+                thirdLevel.levelId = levelCount++;
+                thirdLevel.levelTexture = collageOrg.GetTexture2DForCollage(secondLevel, selectedNumber2);
+                thirdLevel.levelCollageSize = targetTexture.width / 4 / 4 / 4;
+
+                //link parent
+                thirdLevel.parentLevelInfo = secondLevel;
+                secondLevel.childrenLevelInfo.Add(thirdLevel);
+                secondLevel.childrenLevelCollageIndexes.Add(selectedNumber2);
+            }
+
+        }
 
         //generate third level
-        LevelCollageInfo thirdLevel = new LevelCollageInfo();
-        thirdLevel.levelId = 2;
-        randomCollageIndex = UnityEngine.Random.Range(0, 16);
-        thirdLevel.levelTexture = collageOrg.GetTexture2DForCollage(secondLevel, randomCollageIndex);
-        thirdLevel.levelCollageSize = targetTexture.width / 4 / 4 / 4;
+        //LevelCollageInfo thirdLevel = new LevelCollageInfo();
+        //thirdLevel.levelId = 2;
+        //randomCollageIndex = UnityEngine.Random.Range(0, 16);
+        //thirdLevel.levelTexture = collageOrg.GetTexture2DForCollage(secondLevel, randomCollageIndex);
+        //thirdLevel.levelCollageSize = targetTexture.width / 4 / 4 / 4;
 
-        //link parent
-        thirdLevel.parentLevelInfo = secondLevel;
-        secondLevel.childrenLevelInfo.Add(thirdLevel);
-        secondLevel.childrenLevelCollageIndexes.Add(randomCollageIndex);
+        ////link parent
+        //thirdLevel.parentLevelInfo = secondLevel;
+        //secondLevel.childrenLevelInfo.Add(thirdLevel);
+        //secondLevel.childrenLevelCollageIndexes.Add(randomCollageIndex);
     }
 
 
