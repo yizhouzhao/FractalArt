@@ -21,7 +21,7 @@ public class LevelCollageInfo
 
     public Texture2D GetSketch()
     {
-        Debug.Log("here" + collageFractionInfoList.Count + " " + levelTexture.height + " " + levelTexture.width);
+        //Debug.Log("here" + collageFractionInfoList.Count + " " + levelTexture.height + " " + levelTexture.width);
         Texture2D sketch = new Texture2D(levelTexture.width, levelTexture.height, levelTexture.format, true);
         foreach(CollageFractionInfo collage in collageFractionInfoList)
         {
@@ -33,7 +33,7 @@ public class LevelCollageInfo
                 int xOffset = positionId % gameBoard.gridCountPerLine;
                 int yOffset = positionId / gameBoard.gridCountPerLine;
                 Texture2D tex = collage.currentTexture2d;
-                Debug.Log("collage texture2d: " + tex.width + " " + tex.height);
+                //Debug.Log("collage texture2d: " + tex.width + " " + tex.height);
                 if (nextIndex != -1)
                 {
                     LevelCollageInfo childLevel = childrenLevelInfo[nextIndex];
@@ -206,14 +206,15 @@ public class CollageOrganizer : MonoBehaviour
     {
         for(int i = 0; i < collageFractionList.Count; i++)
         {
+            collageFractionList[i].canEnterNextLevel = false;
             Texture2D cTex = GetTexture2DForCollage(levelInfo, i);
             collageFractionList[i].currentTexture2d = cTex;
             if (currentLevelInfo.childrenLevelCollageIndexes.Contains(i))
             {
+                collageFractionList[i].canEnterNextLevel = true;
                 LevelCollageInfo child = currentLevelInfo.childrenLevelInfo[currentLevelInfo.childrenLevelCollageIndexes.IndexOf(i)];
                 if (!child.visited)
                 {
-                    collageFractionList[i].canEnterNextLevel = true;
                     collageFractionList[i].SetImageFromTexture2D(PlayerInfo.questionTexture);
                 }
                 else

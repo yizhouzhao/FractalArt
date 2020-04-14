@@ -45,12 +45,7 @@ public class PlayerInfo
 
     //image
     public static AssetBundle loadedAssetBundle;
-    public static int pictureIndex = 2;
+    public static int pictureIndex = 1;
     public static Texture2D questionTexture; //hold question template
-
-
-    //difficult_settings
-    public static int first_level_width = 4; //how many pieces need action in one level
-    public static int second_level_width = 2;
 
 }

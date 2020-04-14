@@ -10,6 +10,7 @@ public class CollageFractionInfo
     public int positionId;
     public Vector3 currentPosition;
     public Texture2D currentTexture2d;
+    public bool canEnterNextLevel;
 }
 
 public class CollageFraction : MonoBehaviour
@@ -40,6 +41,7 @@ public class CollageFraction : MonoBehaviour
         cInfo.positionId = positionId;
         cInfo.currentPosition = this.transform.position;
         cInfo.currentTexture2d = currentTexture2d;
+        cInfo.canEnterNextLevel = canEnterNextLevel;
         return cInfo;
     }
 
@@ -49,6 +51,7 @@ public class CollageFraction : MonoBehaviour
         this.positionId = cInfo.positionId;
         this.transform.position = cInfo.currentPosition;
         this.currentTexture2d = cInfo.currentTexture2d;
+        this.canEnterNextLevel = cInfo.canEnterNextLevel;
         SetImageFromTexture2D(currentTexture2d);
     }
 
