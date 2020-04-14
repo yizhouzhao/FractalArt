@@ -395,6 +395,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridCountPerLine: 2
   collageSize: 200
+  first_level_puzzle_num: 2
+  second_level_puzzle_num: 2
 --- !u!1 &118480207
 GameObject:
   m_ObjectHideFlags: 0
@@ -2368,7 +2370,7 @@ PrefabInstance:
     - target: {fileID: 9201971947208663462, guid: 915bda0ae104f704b951fe91f63a584c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 915bda0ae104f704b951fe91f63a584c, type: 3}

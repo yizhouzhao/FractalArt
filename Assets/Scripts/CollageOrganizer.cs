@@ -12,6 +12,7 @@ public class LevelCollageInfo
     public int levelCollageSize;
 
     public bool visited = false;
+    public static GameBoard gameBoard;
 
     //Tree structure To NEXT LEVEL
     public LevelCollageInfo parentLevelInfo;
@@ -20,7 +21,7 @@ public class LevelCollageInfo
 
     public Texture2D GetSketch()
     {
-        //Debug.Log("here" + collageFractionInfoList.Count + " " + levelTexture.height + " " + levelTexture.width);
+        Debug.Log("here" + collageFractionInfoList.Count + " " + levelTexture.height + " " + levelTexture.width);
         Texture2D sketch = new Texture2D(levelTexture.width, levelTexture.height, levelTexture.format, true);
         foreach(CollageFractionInfo collage in collageFractionInfoList)
         {
@@ -29,9 +30,10 @@ public class LevelCollageInfo
             if(positionId != -1)
             {
                 //Debug.Log("here has some ids");
-                int xOffset = positionId % 4;
-                int yOffset = positionId / 4;
+                int xOffset = positionId % gameBoard.gridCountPerLine;
+                int yOffset = positionId / gameBoard.gridCountPerLine;
                 Texture2D tex = collage.currentTexture2d;
+                Debug.Log("collage texture2d: " + tex.width + " " + tex.height);
                 if (nextIndex != -1)
                 {
                     LevelCollageInfo childLevel = childrenLevelInfo[nextIndex];
@@ -83,6 +85,8 @@ public class CollageOrganizer : MonoBehaviour
 
     void Awake()
     {
+        //init gameboard
+        LevelCollageInfo.gameBoard = gameBoard;
 
         //init grid positions
         gridPointList = new List<Vector3>();

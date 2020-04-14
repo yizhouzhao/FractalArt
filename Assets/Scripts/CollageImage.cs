@@ -92,7 +92,7 @@ public class CollageImage : MonoBehaviour
             LevelCollageInfo secondLevel = new LevelCollageInfo();
             secondLevel.levelId = levelCount++;
             secondLevel.levelTexture = collageOrg.GetTexture2DForCollage(initLevel, selectedNumber);
-            secondLevel.levelCollageSize = targetTexture.width / 4 / 4;
+            secondLevel.levelCollageSize = targetTexture.width / collagePerLine / collagePerLine;
 
             //link parent
             secondLevel.parentLevelInfo = initLevel;
@@ -106,7 +106,7 @@ public class CollageImage : MonoBehaviour
                 LevelCollageInfo thirdLevel = new LevelCollageInfo();
                 thirdLevel.levelId = levelCount++;
                 thirdLevel.levelTexture = collageOrg.GetTexture2DForCollage(secondLevel, selectedNumber2);
-                thirdLevel.levelCollageSize = targetTexture.width / 4 / 4 / 4;
+                thirdLevel.levelCollageSize = targetTexture.width / collagePerLine / collagePerLine / collagePerLine;
 
                 //link parent
                 thirdLevel.parentLevelInfo = secondLevel;
