@@ -57,6 +57,7 @@ public class CollageImage : MonoBehaviour
         else
         {
             pictureIndex = UnityEngine.Random.Range(1, 11);
+            PlayerInfo.pictureIndex = pictureIndex;
         }
         texture = PlayerInfo.loadedAssetBundle.LoadAsset<Texture2D>(pictureIndex.ToString());
         //Sprite pictureSprite = prefab.game
