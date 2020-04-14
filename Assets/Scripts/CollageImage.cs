@@ -28,9 +28,10 @@ public class CollageImage : MonoBehaviour
 
         LoadSprite();
 
+        //Commented for new scene
         SetLevels();
 
-        //Random select collage to move to candidate positions
+        ////Random select collage to move to candidate positions
         collageOrg.LoadLevel(collageOrg.currentLevelInfo);
         collageOrg.SaveLevel();
 
@@ -65,12 +66,13 @@ public class CollageImage : MonoBehaviour
     private void SetLevels()
     {
         int levelCount = 0;
+        int collagePerLine = collageOrg.gameBoard.gridCountPerLine;
 
         //sent info to collage organizing
         LevelCollageInfo initLevel = new LevelCollageInfo();
         initLevel.levelId = levelCount++;
         initLevel.levelTexture = targetTexture;
-        initLevel.levelCollageSize = targetTexture.width / 4;
+        initLevel.levelCollageSize = targetTexture.width / collagePerLine;
 
         collageOrg.currentLevelId = 0;
         collageOrg.currentLevelInfo = initLevel;
@@ -83,9 +85,9 @@ public class CollageImage : MonoBehaviour
             numberList.Add(i);
         }
 
-        List<int> selectedNumberList = GFractalArt.ChooseFrom<int>(numberList, count, PlayerInfo.first_level_width);
+        List<int> selectedNumberList = GFractalArt.ChooseFrom<int>(numberList, count, collageOrg.gameBoard.first_level_puzzle_num);
 
-        foreach(int selectedNumber in selectedNumberList)
+        foreach (int selectedNumber in selectedNumberList)
         {
             LevelCollageInfo secondLevel = new LevelCollageInfo();
             secondLevel.levelId = levelCount++;
@@ -97,7 +99,7 @@ public class CollageImage : MonoBehaviour
             initLevel.childrenLevelInfo.Add(secondLevel);
             initLevel.childrenLevelCollageIndexes.Add(selectedNumber);
 
-            List<int> selectedNumberList2 = GFractalArt.ChooseFrom<int>(numberList, count, PlayerInfo.second_level_width);
+            List<int> selectedNumberList2 = GFractalArt.ChooseFrom<int>(numberList, count, collageOrg.gameBoard.second_level_puzzle_num);
 
             foreach (int selectedNumber2 in selectedNumberList2)
             {

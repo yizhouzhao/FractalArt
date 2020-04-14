@@ -104,7 +104,7 @@ public class CollageFraction : MonoBehaviour
         //For debug use
         Texture2D debugTex = _Collage.currentLevelInfo.GetSketch();
 
-        SetImageFromTexture2D(CollageImage.ScaleTexture(debugTex, GFractalArt.collageSize, GFractalArt.collageSize));
+        SetImageFromTexture2D(CollageImage.ScaleTexture(debugTex, _Collage.gameBoard.collageSize, _Collage.gameBoard.collageSize));
         yield return null;
     }
 
@@ -128,7 +128,7 @@ public class CollageFraction : MonoBehaviour
         for (int i = 0; i < _Collage.gridPointList.Count; ++i)
         {
             Vector3 grid = _Collage.gridPointList[i];
-            if (Vector3.Distance(this.transform.position, grid) < 0.3f)
+            if (Vector3.Distance(this.transform.position, grid) < 0.32f)
             {
                 this.transform.position = grid;
                 this.positionId = i;
@@ -167,8 +167,9 @@ public class CollageFraction : MonoBehaviour
     
     public void SetImageFromTexture2D(Texture2D tex2d)
     {
-        Texture2D scaledTex = CollageImage.ScaleTexture(tex2d, GFractalArt.collageSize, GFractalArt.collageSize);
+        int collageSize = _Collage.gameBoard.collageSize;
+        Texture2D scaledTex = CollageImage.ScaleTexture(tex2d, collageSize, collageSize);
         SpriteRenderer spriteRenderer = this.GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = Sprite.Create(scaledTex, new Rect(0, 0, GFractalArt.collageSize, GFractalArt.collageSize), new Vector2(0.5f, 0.5f));
+        spriteRenderer.sprite = Sprite.Create(scaledTex, new Rect(0, 0, collageSize, collageSize), new Vector2(0.5f, 0.5f));
     }
 }

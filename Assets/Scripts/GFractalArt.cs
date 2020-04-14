@@ -13,7 +13,7 @@ public class GFractalArt
 
     //image and collage settings
     public static int puzzleImageSize = 512;
-    public static int collageSize = 100;
+    //public static int collageSize = 100;
 
 
     //choose k item from list with length n; n >= k

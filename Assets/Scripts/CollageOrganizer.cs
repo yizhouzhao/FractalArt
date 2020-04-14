@@ -64,6 +64,9 @@ public class LevelCollageInfo
 public class CollageOrganizer : MonoBehaviour
 {
     //collage pieces 
+    [Header("Gameboard")]
+    public GameBoard gameBoard;
+
     [Header("Collage Pieces")]
     public List<CollageFraction> collageFractionList;
     public List<CollageFraction> candidateList;
@@ -90,7 +93,7 @@ public class CollageOrganizer : MonoBehaviour
         float boardTop = GFractalArt.boardCenter.y + GFractalArt.boardHeight / 2;
         float boardBottom = GFractalArt.boardCenter.y - GFractalArt.boardHeight / 2;
 
-        float step = GFractalArt.boardWidth / GFractalArt.gridCountPerLine;
+        float step = GFractalArt.boardWidth / gameBoard.gridCountPerLine;
         float z = this.transform.position.z;
 
         
@@ -228,8 +231,8 @@ public class CollageOrganizer : MonoBehaviour
         Texture2D currentTexture = levelInfo.levelTexture;
         int collageTempSize = levelInfo.levelCollageSize;
         Texture2D collageTex =  new Texture2D(collageTempSize, collageTempSize, currentTexture.format, true);
-        int xOffset = collageIndex % 4;
-        int yOffset = collageIndex / 4;
+        int xOffset = collageIndex % gameBoard.gridCountPerLine;
+        int yOffset = collageIndex / gameBoard.gridCountPerLine;
         for (int i = 0; i < collageTempSize; i++)
         {
             for (int j = 0; j < collageTempSize; ++j)
