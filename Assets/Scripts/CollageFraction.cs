@@ -84,13 +84,13 @@ public class CollageFraction : MonoBehaviour
                 if (canEnterNextLevel)
                 {
                     isRightSelected = false;
-                    Debug.Log("Pressed right click enter next level." + _Collage.currentLevelInfo.levelId);
+                    //Debug.Log("Pressed right click enter next level." + _Collage.currentLevelInfo.levelId);
                     //Debug.Log(_Collage.currentLevelInfo.childrenLevelCollageIndexes);
                     Debug.Log(collageId);
                     int nextLevelIndex = _Collage.currentLevelInfo.childrenLevelCollageIndexes.IndexOf(collageId);
-                    Debug.Log("nextLevelIndex " + nextLevelIndex);
+                    //Debug.Log("nextLevelIndex " + nextLevelIndex);
                     LevelCollageInfo nextLevel = _Collage.currentLevelInfo.childrenLevelInfo[nextLevelIndex];
-                    _Collage.LoadLevel(nextLevel);
+                    _Collage.LoadNextLevel(nextLevel);
                 }
             }
         }
@@ -100,7 +100,7 @@ public class CollageFraction : MonoBehaviour
     {
        
         yield return new WaitForSeconds(1f);
-        Debug.Log("DDDDDDDEBUG");
+        //Debug.Log("DDDDDDDEBUG");
         //For debug use
         Texture2D debugTex = _Collage.currentLevelInfo.GetSketch();
 

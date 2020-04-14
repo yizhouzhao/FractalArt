@@ -95,6 +95,16 @@ public class CollageOrganizer : MonoBehaviour
         }
     }
 
+    //set piece to grid one by one
+    public void SequentiallySetPieceToGrid()
+    {
+        for(int i = 0; i < collageFractionList.Count; ++i)
+        {
+            collageFractionList[i].gameObject.transform.position = gridPointList[i];
+            collageFractionList[i].StickToGrid();
+        }
+    }
+
     void Start()
     {
         
@@ -165,13 +175,8 @@ public class CollageOrganizer : MonoBehaviour
     public int GetCollageScore()
     {
         int score = 0;
-        foreach(CollageFraction collageFraction in collageFractionList)
-        {
-            if(collageFraction.positionId == collageFraction.collageId)
-            {
-                score++;
-            }
-        }
+
+        //To do
         return score;
     }
 
@@ -233,11 +238,9 @@ public class CollageOrganizer : MonoBehaviour
         {
             //see this level for the first time for empty list generate pieces and shuffle
             SetCollagePieces(levelInfo);
+            SequentiallySetPieceToGrid();
             ShuffleCollagePieces();
-            //foreach(CollageFraction cFraction in collageFractionList)
-            //{
-            //    levelInfoList[levelIndex].collageFractionList.Add(cFraction);
-            //}
+
         }
         else
         {
@@ -281,13 +284,10 @@ public class CollageOrganizer : MonoBehaviour
         }
     }
 
-    public void ToNextLevel()
+    public void LoadNextLevel(LevelCollageInfo levelInfo)
     {
         SaveLevel();
-        if(currentLevelInfo.childrenLevelInfo.Count > 0)
-        {
-            LoadLevel(currentLevelInfo.childrenLevelInfo[0]);
-        }
+        LoadLevel(levelInfo);
     }
 
     public void ToLastLevel()
