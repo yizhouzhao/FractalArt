@@ -12,6 +12,7 @@ public class LevelCollageInfo
     public int levelCollageSize;
 
     public bool visited = false;
+    public static GameBoard gameBoard;
 
     //Tree structure To NEXT LEVEL
     public LevelCollageInfo parentLevelInfo;
@@ -24,14 +25,29 @@ public class LevelCollageInfo
         Texture2D sketch = new Texture2D(levelTexture.width, levelTexture.height, levelTexture.format, true);
         foreach(CollageFractionInfo collage in collageFractionInfoList)
         {
+            int nextIndex = childrenLevelCollageIndexes.IndexOf(collage.collageId);
             int positionId = collage.positionId;
             if(positionId != -1)
             {
                 //Debug.Log("here has some ids");
-                int xOffset = positionId % 4;
-                int yOffset = positionId / 4;
-                //send picture to sketches
+                int xOffset = positionId % gameBoard.gridCountPerLine;
+                int yOffset = positionId / gameBoard.gridCountPerLine;
                 Texture2D tex = collage.currentTexture2d;
+                //Debug.Log("collage texture2d: " + tex.width + " " + tex.height);
+                if (nextIndex != -1)
+                {
+                    LevelCollageInfo childLevel = childrenLevelInfo[nextIndex];
+                    if (!childLevel.visited)
+                    {
+                        tex = CollageImage.ScaleTexture(PlayerInfo.questionTexture, tex.width, tex.height);
+                    }
+                    else
+                    {
+                        tex = CollageImage.ScaleTexture(childLevel.GetSketch(), tex.width, tex.height);
+                    }
+                }
+                //send picture to sketches
+                
                 for (int i = 0; i < tex.width; i++)
                 {
                     for (int j = 0; j < tex.height; j++)
@@ -50,6 +66,9 @@ public class LevelCollageInfo
 public class CollageOrganizer : MonoBehaviour
 {
     //collage pieces 
+    [Header("Gameboard")]
+    public GameBoard gameBoard;
+
     [Header("Collage Pieces")]
     public List<CollageFraction> collageFractionList;
     public List<CollageFraction> candidateList;
@@ -66,6 +85,8 @@ public class CollageOrganizer : MonoBehaviour
 
     void Awake()
     {
+        //init gameboard
+        LevelCollageInfo.gameBoard = gameBoard;
 
         //init grid positions
         gridPointList = new List<Vector3>();
@@ -76,7 +97,7 @@ public class CollageOrganizer : MonoBehaviour
         float boardTop = GFractalArt.boardCenter.y + GFractalArt.boardHeight / 2;
         float boardBottom = GFractalArt.boardCenter.y - GFractalArt.boardHeight / 2;
 
-        float step = GFractalArt.boardWidth / GFractalArt.gridCountPerLine;
+        float step = GFractalArt.boardWidth / gameBoard.gridCountPerLine;
         float z = this.transform.position.z;
 
         
@@ -185,14 +206,15 @@ public class CollageOrganizer : MonoBehaviour
     {
         for(int i = 0; i < collageFractionList.Count; i++)
         {
+            collageFractionList[i].canEnterNextLevel = false;
             Texture2D cTex = GetTexture2DForCollage(levelInfo, i);
             collageFractionList[i].currentTexture2d = cTex;
             if (currentLevelInfo.childrenLevelCollageIndexes.Contains(i))
             {
+                collageFractionList[i].canEnterNextLevel = true;
                 LevelCollageInfo child = currentLevelInfo.childrenLevelInfo[currentLevelInfo.childrenLevelCollageIndexes.IndexOf(i)];
                 if (!child.visited)
                 {
-                    collageFractionList[i].canEnterNextLevel = true;
                     collageFractionList[i].SetImageFromTexture2D(PlayerInfo.questionTexture);
                 }
                 else
@@ -214,8 +236,8 @@ public class CollageOrganizer : MonoBehaviour
         Texture2D currentTexture = levelInfo.levelTexture;
         int collageTempSize = levelInfo.levelCollageSize;
         Texture2D collageTex =  new Texture2D(collageTempSize, collageTempSize, currentTexture.format, true);
-        int xOffset = collageIndex % 4;
-        int yOffset = collageIndex / 4;
+        int xOffset = collageIndex % gameBoard.gridCountPerLine;
+        int yOffset = collageIndex / gameBoard.gridCountPerLine;
         for (int i = 0; i < collageTempSize; i++)
         {
             for (int j = 0; j < collageTempSize; ++j)

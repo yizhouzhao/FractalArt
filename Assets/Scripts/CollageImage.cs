@@ -28,9 +28,10 @@ public class CollageImage : MonoBehaviour
 
         LoadSprite();
 
+        //Commented for new scene
         SetLevels();
 
-        //Random select collage to move to candidate positions
+        ////Random select collage to move to candidate positions
         collageOrg.LoadLevel(collageOrg.currentLevelInfo);
         collageOrg.SaveLevel();
 
@@ -48,7 +49,17 @@ public class CollageImage : MonoBehaviour
         Texture2D texture; //= Resources.Load<Texture2D>(fileName);
         //print(texture.width);
         //print(texture.height);
-        texture = PlayerInfo.loadedAssetBundle.LoadAsset<Texture2D>(PlayerInfo.pictureIndex.ToString());
+        int pictureIndex;
+        if(PlayerInfo.pictureIndex > 0)
+        {
+            pictureIndex = PlayerInfo.pictureIndex;
+        }
+        else
+        {
+            pictureIndex = UnityEngine.Random.Range(1, 11);
+            PlayerInfo.pictureIndex = pictureIndex;
+        }
+        texture = PlayerInfo.loadedAssetBundle.LoadAsset<Texture2D>(pictureIndex.ToString());
         //Sprite pictureSprite = prefab.game
 
         //cut the image into square size
@@ -65,12 +76,13 @@ public class CollageImage : MonoBehaviour
     private void SetLevels()
     {
         int levelCount = 0;
+        int collagePerLine = collageOrg.gameBoard.gridCountPerLine;
 
         //sent info to collage organizing
         LevelCollageInfo initLevel = new LevelCollageInfo();
         initLevel.levelId = levelCount++;
         initLevel.levelTexture = targetTexture;
-        initLevel.levelCollageSize = targetTexture.width / 4;
+        initLevel.levelCollageSize = targetTexture.width / collagePerLine;
 
         collageOrg.currentLevelId = 0;
         collageOrg.currentLevelInfo = initLevel;
@@ -83,28 +95,28 @@ public class CollageImage : MonoBehaviour
             numberList.Add(i);
         }
 
-        List<int> selectedNumberList = GFractalArt.ChooseFrom<int>(numberList, count, PlayerInfo.first_level_width);
+        List<int> selectedNumberList = GFractalArt.ChooseFrom<int>(numberList, count, collageOrg.gameBoard.first_level_puzzle_num);
 
-        foreach(int selectedNumber in selectedNumberList)
+        foreach (int selectedNumber in selectedNumberList)
         {
             LevelCollageInfo secondLevel = new LevelCollageInfo();
             secondLevel.levelId = levelCount++;
             secondLevel.levelTexture = collageOrg.GetTexture2DForCollage(initLevel, selectedNumber);
-            secondLevel.levelCollageSize = targetTexture.width / 4 / 4;
+            secondLevel.levelCollageSize = targetTexture.width / collagePerLine / collagePerLine;
 
             //link parent
             secondLevel.parentLevelInfo = initLevel;
             initLevel.childrenLevelInfo.Add(secondLevel);
             initLevel.childrenLevelCollageIndexes.Add(selectedNumber);
 
-            List<int> selectedNumberList2 = GFractalArt.ChooseFrom<int>(numberList, count, PlayerInfo.second_level_width);
+            List<int> selectedNumberList2 = GFractalArt.ChooseFrom<int>(numberList, count, collageOrg.gameBoard.second_level_puzzle_num);
 
             foreach (int selectedNumber2 in selectedNumberList2)
             {
                 LevelCollageInfo thirdLevel = new LevelCollageInfo();
                 thirdLevel.levelId = levelCount++;
                 thirdLevel.levelTexture = collageOrg.GetTexture2DForCollage(secondLevel, selectedNumber2);
-                thirdLevel.levelCollageSize = targetTexture.width / 4 / 4 / 4;
+                thirdLevel.levelCollageSize = targetTexture.width / collagePerLine / collagePerLine / collagePerLine;
 
                 //link parent
                 thirdLevel.parentLevelInfo = secondLevel;

@@ -11,8 +11,10 @@ public class GenerateGrid : Editor
      */
     string _prefabAssetPath = "Assets/Prefabs/BoardGrid.prefab";
 
+
     GameObject _gridPrefab;
     private GameBoard gameBoard;
+    private GameBoard _GameBoard;
 
     public override void OnInspectorGUI()
     {
@@ -25,6 +27,7 @@ public class GenerateGrid : Editor
 
     private void _generateGrid()
     {
+        _GameBoard = (GameBoard)target;
         gameBoard = target as GameBoard;
         _gridPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(_prefabAssetPath);
 
@@ -41,7 +44,7 @@ public class GenerateGrid : Editor
         float boardTop = GFractalArt.boardCenter.y + GFractalArt.boardHeight / 2;
         float boardBottom = GFractalArt.boardCenter.y - GFractalArt.boardHeight / 2;
 
-        float step = GFractalArt.boardWidth / GFractalArt.gridCountPerLine;
+        float step = GFractalArt.boardWidth / _GameBoard.gridCountPerLine;
         float z = gameBoard.transform.position.z;
 
         Debug.Log("Editor");

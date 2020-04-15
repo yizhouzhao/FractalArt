@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class GameBoard : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int gridCountPerLine;
+    public int collageSize;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public int first_level_puzzle_num;
+    public int second_level_puzzle_num;
+
 }
