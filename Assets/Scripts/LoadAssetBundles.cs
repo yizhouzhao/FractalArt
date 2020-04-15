@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class LoadAssetBundles : MonoBehaviour
 {
+    public GameObject loadingScreenObj;
+    public Slider sliderBar;
+    public GameObject LevelSelect;
 
     AssetBundle myLoadedAssetbundle;
     private string path;
@@ -67,7 +71,22 @@ public class LoadAssetBundles : MonoBehaviour
     {
         //save picture index
         PlayerInfo.pictureIndex = pictureIndex;
-        SceneManager.LoadScene("GameScene3333");
+        loadingScreenObj.SetActive(true);
+        LevelSelect.SetActive(false);
+        StartCoroutine(LoadNewScene());
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    
+    IEnumerator LoadNewScene()
+    {
+        AsyncOperation async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+        while(!async.isDone)
+        {
+            float progress = Mathf.Clamp01(async.progress / 0.9f);
+            Debug.Log(progress);
+            sliderBar.value = progress;
+            yield return null;
+        }
     }
 
     public void GoBack()
