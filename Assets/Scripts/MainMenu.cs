@@ -10,4 +10,9 @@ public class MainMenu : MonoBehaviour
         AssetBundle.UnloadAllAssetBundles(true);
         SceneManager.LoadScene("LevelSelection");
     }
+
+    public void Submit()
+    {
+        SceneManager.LoadScene("CompleteScene");
+    }
 }
