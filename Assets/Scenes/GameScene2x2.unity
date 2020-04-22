@@ -727,6 +727,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PuzzleFraction
       objectReference: {fileID: 0}
+    - target: {fileID: 7452623923898009932, guid: 33075b174493e8f4988ca62556768dd2,
+        type: 3}
+      propertyPath: m_TagString
+      value: pintu
+      objectReference: {fileID: 0}
     - target: {fileID: 7452623923898009934, guid: 33075b174493e8f4988ca62556768dd2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2648,6 +2653,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PuzzleFraction (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7452623923898009932, guid: 33075b174493e8f4988ca62556768dd2,
+        type: 3}
+      propertyPath: m_TagString
+      value: pintu
+      objectReference: {fileID: 0}
     - target: {fileID: 7452623923898009934, guid: 33075b174493e8f4988ca62556768dd2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2813,6 +2823,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PuzzleFraction (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7452623923898009932, guid: 33075b174493e8f4988ca62556768dd2,
+        type: 3}
+      propertyPath: m_TagString
+      value: pintu
+      objectReference: {fileID: 0}
     - target: {fileID: 7452623923898009934, guid: 33075b174493e8f4988ca62556768dd2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2880,6 +2895,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1493649720}
   - component: {fileID: 1493649721}
+  - component: {fileID: 1493649722}
   m_Layer: 0
   m_Name: Collage
   m_TagString: Untagged
@@ -2936,6 +2952,18 @@ MonoBehaviour:
     visited: 0
     childrenLevelInfo: []
     childrenLevelCollageIndexes: 
+--- !u!114 &1493649722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493649719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 986ea8995d68e8f40b350d17cd5b728f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1508469598
 GameObject:
   m_ObjectHideFlags: 0
@@ -3945,6 +3973,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PuzzleFraction (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7452623923898009932, guid: 33075b174493e8f4988ca62556768dd2,
+        type: 3}
+      propertyPath: m_TagString
+      value: pintu
       objectReference: {fileID: 0}
     - target: {fileID: 7452623923898009934, guid: 33075b174493e8f4988ca62556768dd2,
         type: 3}

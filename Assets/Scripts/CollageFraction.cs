@@ -32,6 +32,8 @@ public class CollageFraction : MonoBehaviour
     [Header("Debug only")]
     public bool debug;
     private bool isRightSelected = false;
+    public static CollageFraction selectedCollageFraction;
+    public Vector3 originalPosition;
 
     //Get the summary information
     public CollageFractionInfo GetFractionInfo()
@@ -97,6 +99,21 @@ public class CollageFraction : MonoBehaviour
                 }
             }
         }
+
+        //if (IsDoubleTap())
+        //{
+        //    if (canEnterNextLevel)
+        //    {
+        //        isRightSelected = false;
+        //        //Debug.Log("Pressed right click enter next level." + _Collage.currentLevelInfo.levelId);
+        //        //Debug.Log(_Collage.currentLevelInfo.childrenLevelCollageIndexes);
+        //        //Debug.Log(collageId);
+        //        int nextLevelIndex = _Collage.currentLevelInfo.childrenLevelCollageIndexes.IndexOf(collageId);
+        //        //Debug.Log("nextLevelIndex " + nextLevelIndex);
+        //        LevelCollageInfo nextLevel = _Collage.currentLevelInfo.childrenLevelInfo[nextLevelIndex];
+        //        _Collage.LoadNextLevel(nextLevel);
+        //    }
+        //}
     }
 
     IEnumerator DelayStart()
@@ -123,6 +140,10 @@ public class CollageFraction : MonoBehaviour
     {
         StickToGrid();
         //Stick to grid
+        if(Vector3.Distance(this.transform.position, originalPosition) > 0.05f)
+        {
+            CollageFraction.selectedCollageFraction = null;
+        }
     }
 
     public void StickToGrid()
@@ -152,7 +173,6 @@ public class CollageFraction : MonoBehaviour
         //}
         transform.position = GetMouseWorldPos() + mOffset;
 
-
         //this.transform.position = GetGridPosition(transform.position);
     }
 
@@ -161,6 +181,8 @@ public class CollageFraction : MonoBehaviour
         //print("on mouse over");
         mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
         mOffset = gameObject.transform.position - GetMouseWorldPos();
+
+        originalPosition = this.transform.position;
 
         if (Input.GetMouseButtonDown(1))
         {

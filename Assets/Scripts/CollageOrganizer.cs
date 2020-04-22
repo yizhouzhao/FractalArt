@@ -255,6 +255,7 @@ public class CollageOrganizer : MonoBehaviour
     {
         currentLevelInfo = levelInfo;
         currentLevelInfo.visited = true;
+        CollageFraction.selectedCollageFraction = null;
         //Debug.Log("Collage ORG Load level: " + levelIndex.ToString() + " Count: " + levelInfoList[currentLevelId].collageFractionInfoList.Count);
         if (levelInfo.collageFractionInfoList.Count == 0)
         {
